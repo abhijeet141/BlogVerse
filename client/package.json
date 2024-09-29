@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@abhi209/blogverse-common": "^1.0.0",
+    "@abhi209/blogverse-common": "^1.0.4",
     "@radix-ui/react-slot": "^1.1.0",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
