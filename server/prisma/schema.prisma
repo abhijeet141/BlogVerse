@@ -27,5 +27,6 @@ model Post {
   content String
   published Boolean @default(false)
   authorId String
+  publishedDate DateTime @default(now())
   author User @relation(fields: [authorId], references: [id])
 }
