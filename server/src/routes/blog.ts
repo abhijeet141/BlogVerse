@@ -54,6 +54,7 @@ blogRouter.post('/',async(c)=>{
             title,
             content,
             authorId: userId,
+            publishedDate: new Date(),
             published: true
            }
         }) 
@@ -73,7 +74,7 @@ blogRouter.put('/',async(c)=>{
     }).$extends(withAccelerate())
     try{
         const {id,title,content} = await c.req.json()
-        const {success} = blogInput.safeParse({
+        const {success} = updateblogInput.safeParse({
             title,
             content,
             id
@@ -90,6 +91,7 @@ blogRouter.put('/',async(c)=>{
            data:{
             title,
             content,
+            publishedDate: new Date(),
            }
         }) 
         return c.json({
@@ -128,10 +130,75 @@ blogRouter.get('/bulk',async (c)=>{
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
-    const blog = await prisma.post.findMany({})
+    const blogs = await prisma.post.findMany({
+        select:{
+            title: true,
+            content: true,
+            id: true,
+            authorId: true,
+            publishedDate: true,
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        }
+    })
     return c.json(
-        blog
+        blogs
     )
+})
+
+blogRouter.get('/:id',async(c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+    const queryId = c.req.param('id')
+    const blog = await prisma.post.findUnique({
+        where:{
+            id: queryId
+        },
+        select:{
+            title: true,
+            content: true,
+            id: true,
+            publishedDate: true,
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        }
+    })
+    return c.json({
+        blog
+    })    
+})
+
+blogRouter.get('/author/:authorId',async(c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+    const queryId = c.req.param('authorId')
+    const blog = await prisma.post.findMany({
+        where:{
+            authorId: queryId
+        },
+        select:{
+            title: true,
+            content: true,
+            id: true,
+            publishedDate: true,
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        }
+    })
+    return c.json({
+        blog
+    })    
 })
 
 blogRouter.onError((error,c)=>{
