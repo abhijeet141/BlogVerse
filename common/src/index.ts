@@ -17,7 +17,13 @@ export type SignInInput = z.infer<typeof signInInput>
 
 export const blogInput = z.object({
     title: z.string(),
-    content: z.string()
+    content: z.string(),
+    id: z.string(),
+    author: z.object({
+        name: z.string()
+    }),
+    publishedDate: z.string(),
+    authorId: z.string()
 })
 
 export type BlogInput = z.infer<typeof blogInput>
