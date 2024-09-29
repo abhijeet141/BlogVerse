@@ -23,7 +23,7 @@ export function Navbar({setIsAuthenticated}:NavbarPropsType) {
               <React.Fragment>
                 <div className="flex items-center px-6">
                   <TfiWrite className="m-2"/>
-                  <Link to="/write">Write</Link>
+                  <Link to="/new-story">Write</Link>
                 </div>
                 <Button variant="default" onClick={()=>{
                     localStorage.removeItem('tokenId')

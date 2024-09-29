@@ -26,7 +26,7 @@ export function SignIn(){
                         Don't have an account? <Link to={'/signup'}><span className="text-gray-700 underline underline-offset">Sign Up</span></Link>
                     </div>         
                 <div className="py-10">   
-                    <div className="border border-black border-opacity-20 p-5 rounded-xl bg-[#FBF5ED]">
+                    <div className="border border-black border-opacity-20 p-5 rounded-xl">
                     <div className="py-4">
                         <div className="pb-2">
                             Email

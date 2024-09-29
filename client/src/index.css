@@ -6,7 +6,4 @@
   :root {
     --radius: 0.5rem
   }
-  body{
-    @apply bg-custom-cream;
-  }
 }

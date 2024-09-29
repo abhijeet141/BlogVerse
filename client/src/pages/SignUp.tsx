@@ -28,7 +28,7 @@ export function SignUp(){
                 </div>
               
                 <div className="py-10">
-                <div className="border border-black border-opacity-20 p-5 rounded-xl bg-[#FBF5ED]">
+                <div className="border border-black border-opacity-20 p-5 rounded-xl">
                     <div>
                         <div className="pb-2">Username</div>
                         <LabelledInput type="text" placeholder="Enter your username" onChange={(e)=>{
