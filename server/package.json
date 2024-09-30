@@ -8,6 +8,7 @@
     "@abhi209/blogverse-common": "^1.0.0",
     "@prisma/client": "^5.19.1",
     "@prisma/extension-accelerate": "^1.1.0",
+    "ai-readme-builder": "^0.1.3",
     "hono": "^4.6.2",
     "prisma": "^5.19.1"
   },
