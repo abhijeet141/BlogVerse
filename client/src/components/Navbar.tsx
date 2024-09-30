@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { isAuthenticated } from '../HomeRoute'
 import { TfiWrite } from "react-icons/tfi";
 
@@ -11,6 +11,10 @@ interface NavbarPropsType {
 
 export function Navbar({setIsAuthenticated}:NavbarPropsType) {
   const navigate = useNavigate()
+  const [authenticated,setAuthenticated] = useState(isAuthenticated())
+  useEffect(()=>{
+    setAuthenticated(isAuthenticated())
+  },[])
   return (
     <header className="py-6 xl:py-4">
       <div className="border-b border-black py-2">
@@ -19,7 +23,7 @@ export function Navbar({setIsAuthenticated}:NavbarPropsType) {
             <Link to="/">BlogVerse</Link>
           </div>
           <div className="flex justify-center items-center">
-            {isAuthenticated() ? (
+            {authenticated || isAuthenticated() ? (
               <React.Fragment>
                 <div className="flex items-center px-6">
                   <TfiWrite className="m-2"/>
@@ -28,6 +32,7 @@ export function Navbar({setIsAuthenticated}:NavbarPropsType) {
                 <Button variant="default" onClick={()=>{
                     localStorage.removeItem('tokenId')
                     setIsAuthenticated(false)
+                    setAuthenticated(false)
                     navigate('/')
                 }}>
                  Sign Out
