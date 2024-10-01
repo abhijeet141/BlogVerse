@@ -116,5 +116,5 @@ This project provides common functionality for the Blogverse application. It uti
 For any inquiries or assistance, please contact the project maintainers at:
 
 - **Email:** abhijeetsinha.smith@gmail.com
-- **Website:** https://blogverse-drab.vercel.app/ 
+- **Website:** https://portfolio-website-app-two.vercel.app/ 
 
