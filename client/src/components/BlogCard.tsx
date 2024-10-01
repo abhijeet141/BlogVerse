@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { FormatDate } from "./FormatDate"
 import { CalculateReadingTime } from "./CalculateReadingTime"
+import { stripHtmlTags } from "./StripHtmlTags"
 
 interface BlogCardProps{
     authorName: string,
@@ -9,6 +10,10 @@ interface BlogCardProps{
     publishedDate: string
     id: string,
     authorId: string
+}
+
+function removeInlineStyles(content:string) {
+    return content.replace(/style="[^"]*"/g, '');
 }
 
 export function BlogCard({
@@ -21,6 +26,9 @@ export function BlogCard({
 }:BlogCardProps){
     const date = FormatDate(publishedDate)
     const minute = CalculateReadingTime(content)
+    const strippedContent = stripHtmlTags(content)
+    const longContent = strippedContent.length>150   
+    const cleanedContent = removeInlineStyles(strippedContent);
     return(
         <Link to={`/blog/${id}`}>
               <div className="flex border-b border-black py-6 cursor-pointer">
@@ -31,8 +39,9 @@ export function BlogCard({
                 <div className="text-3xl font-bold py-3">
                     {title}
                 </div>
-                <div className="text-lg text-slate-700">
-                    {content.length>100 ? content.slice(0,100) + "..." : content}
+                <div>
+                    {longContent ? <div className="text-lg text-slate-700" dangerouslySetInnerHTML={{__html: cleanedContent.slice(0,150) + "..." }}></div>
+                    :<div className="text-lg text-slate-700" dangerouslySetInnerHTML={{__html: cleanedContent}}></div>}
                 </div>
                 <div className="flex">
                 <div className="pt-4">

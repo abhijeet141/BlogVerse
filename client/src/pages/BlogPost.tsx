@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { SkeletonPostDemo } from "@/components/SkeletonPostDemo";
 import { FormatDate } from "@/components/FormatDate";
@@ -9,7 +9,8 @@ interface BlogProps{
     author: {name: string},
     title: string,
     content: string,
-    publishedDate: string 
+    publishedDate: string,
+    authorId: string
 }
 
 export function BlogPost() {
@@ -52,7 +53,7 @@ export function BlogPost() {
       <div className="text-3xl font-bold py-6">{blog.title}</div>
       <div>
       <div className="cursor-pointer hover:underline underline-offset-2">
-        {blog.author.name}
+      <Link to={`/blog/author/${blog.authorId}`}>{blog.author.name}</Link>
       </div>
       <div className="flex py-6">
         <div>
@@ -64,7 +65,7 @@ export function BlogPost() {
       </div>
       </div>
       {/* <div className="py-6">Blog Image</div> */}
-      <div className="text-lg text-slate-700 text-justify">{blog.content}</div>
-    </div>
+      <div className="text-lg text-slate-700 text-justify" dangerouslySetInnerHTML={{ __html: blog.content }} />
+      </div>
   );
 }

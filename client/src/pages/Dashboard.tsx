@@ -48,7 +48,6 @@ export function Dashboard(){
                            title = {blog.title}
                            content={blog.content}
                            publishedDate = {blog.publishedDate}
-                           //@ts-ignore
                            authorId= {blog.authorId}
                            />
             ))}
