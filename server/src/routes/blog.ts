@@ -162,6 +162,7 @@ blogRouter.get('/:id',async(c)=>{
             title: true,
             content: true,
             id: true,
+            authorId: true,
             publishedDate: true,
             author: {
                 select: {
@@ -189,6 +190,7 @@ blogRouter.get('/author/:authorId',async(c)=>{
             content: true,
             id: true,
             publishedDate: true,
+            authorId:true,
             author: {
                 select: {
                     name: true
