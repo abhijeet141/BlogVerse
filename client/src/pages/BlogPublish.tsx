@@ -58,7 +58,7 @@ export function BlogPublish(){
     return(
         <div className="container flex flex-col">
             <div className="">
-                <Input className="px-0 w-full h-20 text-5xl border-none bg-white placeholder:text-[#b3b3b1] focus:outline-none focus:border-transparent" placeholder="Text" value={title}
+                <Input className="px-0 w-full sm:w-full h-20 text-5xl border-none bg-white placeholder:text-[#b3b3b1] focus:outline-none focus:border-transparent" placeholder="Text" value={title}
                 onChange={(event)=>{
                     setTitle(event.target.value)
                 }}></Input>

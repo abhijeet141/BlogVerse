@@ -19,7 +19,7 @@ export function AuthorPost(){
                         Authorization: "Bearer " + localStorage.getItem('tokenId')
                     }
                 })
-                setBlogs(response.data.blog)                
+                setBlogs(response.data.blog.sort((a:{publishedDate: string},b:{publishedDate:string})=> new Date(b.publishedDate).valueOf() - new Date(a.publishedDate).valueOf()))                
             }
             catch(error){
                 console.error("Error Fetching Author Blogs")

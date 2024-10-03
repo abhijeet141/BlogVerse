@@ -17,7 +17,7 @@ export function Dashboard(){
                         Authorization: "Bearer " + localStorage.getItem('tokenId')
                     }
                 })
-                setBlogs(response.data)
+                setBlogs(response.data.sort((a:{publishedDate: string},b:{publishedDate:string})=> new Date(b.publishedDate).valueOf() - new Date(a.publishedDate).valueOf()))
             }
             catch(error){
                 console.error("Error Fetching Blogs")
