@@ -19,10 +19,10 @@ export function SignIn(){
     return(
         <div className="container">
                <div className="flex flex-col justify-center items-center min-h-[calc(100vh-106px)]">
-                    <div className="text-2xl py-2">
+                    <div className="text-xl sm:text-2xl py-2">
                         Sign in to your account
                     </div>
-                    <div className="text-lg">
+                    <div className="text-sm sm:text-lg">
                         Don't have an account? <Link to={'/signup'}><span className="text-gray-700 underline underline-offset">Sign Up</span></Link>
                     </div>         
                 <div className="py-10">   

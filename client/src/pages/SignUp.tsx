@@ -20,10 +20,10 @@ export function SignUp(){
     return(
         <div className="container">
             <div className="flex flex-col justify-center items-center min-h-[calc(100vh-106px)]">
-                <div className="text-2xl py-2">
-                Create an account
+            <div className="text-xl sm:text-2xl py-2">
+            Create an account
                 </div>
-                <div className="text-lg">
+                <div className="text-sm sm:text-lg">
                     Already have an account? <Link to={'/signin'}><span className="text-gray-700 underline underline-offset">SignIn</span></Link>
                 </div>
               

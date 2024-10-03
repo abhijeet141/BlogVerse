@@ -27,9 +27,7 @@ export function BlogPost() {
             Authorization: "Bearer " + localStorage.getItem("tokenId"),
           },
         });
-        setBlog(response.data.blog);
-        console.log(response.data.blog);
-        
+        setBlog(response.data.blog);        
       } catch (error) {
         console.error("Error Fetching Blog Details");
       } finally {
