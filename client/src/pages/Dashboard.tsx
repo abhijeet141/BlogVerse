@@ -58,6 +58,7 @@ export function Dashboard(){
                         content={blog.content}
                         publishedDate = {blog.publishedDate}
                         authorId= {blog.authorId}
+                        showDeleteButton={false}
                         />
                     ))
                 ) : <div>No Blogs matches your search</div>
