@@ -78,8 +78,6 @@ export function SignUp(){
                         setLoading(true)
                         const response = await axios.post(`${backendUrl}/api/v1/user/signup`,input)                        
                         localStorage.setItem('tokenId',response.data.jwtToken)
-                        localStorage.setItem('name',response.data.name)
-                        localStorage.setItem('userId',response.data.userId)
                         setLoading(false)
                         navigate('/')
                     }
