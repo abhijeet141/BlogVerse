@@ -65,8 +65,10 @@ export function SignIn(){
                     }
                     try{
                         setLoading(true);
-                        const response = await axios.post(`${backendUrl}/api/v1/user/signin`,input)                        
+                        const response = await axios.post(`${backendUrl}/api/v1/user/signin`,input)             
                         localStorage.setItem('tokenId',response.data.jwtToken)
+                        localStorage.setItem('name',response.data.name)
+                        localStorage.setItem('userId',response.data.userId)
                         setLoading(false);
                         navigate('/')
                     }
