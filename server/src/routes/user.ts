@@ -51,7 +51,9 @@ userRouter.post('/signup',async(c)=>{
             }
             const token = await sign(payload,c.env.JWT_SECRET)
             return c.json({
-                jwtToken: token
+                jwtToken: token,
+                name: name,
+                userId: userData.id
             },200)
         }
     }
@@ -100,7 +102,9 @@ userRouter.post('/signin',async(c)=>{
         }
         const token = await sign(payload,c.env.JWT_SECRET)
         return c.json({
-            jwtToken: token
+            jwtToken: token,
+            name: userData.name,
+            userId: userData.id
         },200)
     }
     catch(err){
@@ -109,6 +113,25 @@ userRouter.post('/signin',async(c)=>{
             error: "Error while Signing In",
         },403)
     }
+})
+
+userRouter.get('/:userId',async (c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+    const userId = c.req.param('userId')
+    const userData = await prisma.user.findUnique({
+        where:{
+            id: userId
+        },
+        select:{
+            name: true,
+            email: true
+        }
+    })
+    return c.json({
+        userData
+    })
 })
 
 userRouter.onError((error,c)=>{
