@@ -52,6 +52,7 @@ export function AuthorPost(){
                            content={blog.content}
                            publishedDate = {blog.publishedDate}
                            authorId={blog.authorId}
+                           showDeleteButton={false}
                            />
             ))}
         </div>

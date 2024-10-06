@@ -12,6 +12,8 @@ interface NavbarPropsType {
 
 export function Navbar({setIsAuthenticated}:NavbarPropsType) {
   const navigate = useNavigate()
+  const name = localStorage.getItem('name') as string
+  const userId = localStorage.getItem('userId') as string
   return (
     <header className="sticky top-0 z-50 bg-white pt-6 xl:pt-4">
       <div className="bg-white border-b border-black py-2">
@@ -29,11 +31,18 @@ export function Navbar({setIsAuthenticated}:NavbarPropsType) {
                 </div>
                 <Button variant="default" onClick={()=>{
                     localStorage.removeItem('tokenId')
+                    localStorage.removeItem('name')
+                    localStorage.removeItem('userId')
                     setIsAuthenticated(false)
                     navigate('/signin')
                 }}>
                  Sign Out
                 </Button>
+                <Link to={`/user/${userId}`}>
+                <div className="rounded-full w-10 p-2 ml-4 flex justify-center items-center border border-black cursor-pointer">
+                 {name[0].toUpperCase()}
+                </div>
+                </Link>
                 </div>  
                 <div className="sm:hidden">
                   <MobileNav setIsAuthenticated={setIsAuthenticated}></MobileNav>
