@@ -66,7 +66,7 @@ export function BlogPublish(){
             <div className="py-4">
             <JoditEditor ref={editor} config={config} value={content} onChange={newContent => setContent(newContent)}/>
             </div>
-            <Button className="w-24 bg-[#1a8917] hover:bg-[#1d9719] mt-4" 
+            <Button className="w-24 bg-[#1a8917] hover:bg-[#1d9719] mt-4 mb-2" 
             onClick={handlePublish} disabled={loading}>{loading ? "Publishing" : "Publish"}</Button>
         </div>
     )
