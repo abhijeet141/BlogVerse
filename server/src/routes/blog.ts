@@ -209,7 +209,23 @@ blogRouter.delete('/:postId',async(c)=>{
     }).$extends(withAccelerate())
     const postId = c.req.param('postId')
     try{
-        const deletePost = await prisma.post.delete({
+        const blog = await prisma.post.findUnique({
+            where: {
+                id: postId
+            }
+        });
+
+        if (!blog) {
+            return c.json({ message: "Blog not found" }, 404);
+        }
+
+        await prisma.postLike.deleteMany({
+            where: {
+                postId: postId
+            }
+        });
+
+        await prisma.post.delete({
             where:{
                 id: postId
             }
@@ -223,6 +239,132 @@ blogRouter.delete('/:postId',async(c)=>{
             message: "Error while deleting Blog"
         },403)
     }
+})
+
+blogRouter.post('/:postId/like',async(c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+
+    const postId = c.req.param('postId')
+    
+    const userId = c.get('userId');
+
+
+    const {likedState} = await c.req.json()
+
+    try{
+        const blog = await prisma.post.findUnique({
+            where: {
+                id: postId
+            }
+        })
+
+        if(!blog){
+            return c.json({
+                message: "Blog not found"
+            },404)
+        }
+
+        if(likedState){
+            await prisma.postLike.create({
+                data:{
+                    postId: postId,
+                    authorId: userId
+                }
+            })
+
+            const updateBlog = await prisma.post.update({
+                where:{
+                    id: postId
+                },
+                data:{
+                    likesCount:{increment: 1}
+                }
+            })
+            return c.json(updateBlog)
+        }
+        else{
+            const existingLike = await prisma.postLike.findUnique({
+                where:{
+                    postId_authorId:{
+                        postId: postId,
+                        authorId: userId
+                    }
+                }
+            })
+
+            if(!existingLike){
+                return c.json({
+                    message: "Cannot unlike a post you haven't liked",
+                }, 400);
+            }
+
+            await prisma.postLike.delete({
+                where:{
+                    postId_authorId:{
+                        postId: postId,
+                        authorId: userId
+                    }
+                }
+            })
+
+            if(blog.likesCount>0){
+                const updateBlog = await prisma.post.update({
+                    where: {
+                        id: postId
+                    },
+                    data:{
+                        likesCount: {decrement: 1}
+                    }
+                })
+                return c.json(updateBlog)
+            }
+            else{
+                return c.json({
+                    message: "Post has 0 likes"
+                },400)
+            }
+        }
+    }
+    catch(error){
+        return c.json({
+            message: "Error while liking or unliking Blog"
+        },500)
+    }
+})
+
+blogRouter.get('/:postId/like-state', async(c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+    
+    const postId = c.req.param('postId')
+    const userId = c.get('userId');
+
+    try{
+        const blog = await prisma.post.findUnique({
+            where:{
+                id: postId
+            }
+        })
+        const liked = await prisma.postLike.findUnique({
+            where:{
+                postId_authorId:{
+                    postId: postId,
+                    authorId: userId
+                }
+            }
+        })
+        return c.json({
+            blog: blog,
+            liked: !!liked
+        })
+    }
+    catch(error){
+        return c.json({ message: "Error fetching liked state" }, 500);
+    }
+
 })
 
 blogRouter.onError((error,c)=>{
