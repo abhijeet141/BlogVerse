@@ -3,8 +3,10 @@ import { FormatDate } from "./FormatDate"
 import { CalculateReadingTime } from "./CalculateReadingTime"
 import { stripHtmlTags } from "./StripHtmlTags"
 import { Button } from "./ui/button"
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import axios from "axios"
 import swal from "sweetalert"
+import { useEffect, useState } from "react"
 
 interface BlogCardProps{
     authorName: string,
@@ -36,7 +38,47 @@ export function BlogCard({
     const cleanedContent = removeInlineStyles(strippedContent);
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const navigate = useNavigate()
-    const handleClick = async() => {
+    const [liked,setLiked] = useState(false)
+    const [likesCount,setLikesCount] = useState(0)
+    
+    useEffect(()=>{
+        const fetchLikeState = async() => {
+            try{
+                const response = await axios.get(`${backendUrl}/api/v1/blog/${id}/like-state`,{
+                    headers:{
+                        Authorization: "Bearer " + localStorage.getItem('tokenId')
+                    }
+                })
+                setLiked(response.data.liked)
+                setLikesCount(response.data.blog.likesCount)
+            }
+            catch(error){
+                console.error('Error fetching liked state',error);
+            }
+        }
+        fetchLikeState()
+    },[id])
+
+    const handleToggle = async(e: React.MouseEvent) =>{
+        e.stopPropagation();
+        const newLikedState = !liked
+        setLiked(newLikedState)
+        try{
+            const response = await axios.post(`${backendUrl}/api/v1/blog/${id}/like`,{
+                likedState: newLikedState
+            },
+            { headers:{
+                Authorization: "Bearer " + localStorage.getItem('tokenId')
+            }})
+            setLikesCount(response.data.likesCount)
+        }
+        catch(error){
+            console.error('Error toggling like:', error)
+        }
+    }
+
+    const handleClick = async(e: React.MouseEvent) => {
+        e.stopPropagation(); 
         try{
             await axios.delete(`${backendUrl}/api/v1/blog/${id}`,{
                 headers:{
@@ -44,8 +86,7 @@ export function BlogCard({
                 }
             })
             swal("Blog deleted successfully","","success")
-            navigate(`/user/${authorId}`)
-
+            navigate('/')
         }
         catch(error){
             swal('Error Deleting Blog',"","error");
@@ -65,7 +106,18 @@ export function BlogCard({
                     :<div className="text-lg text-slate-700" dangerouslySetInnerHTML={{__html: cleanedContent}}></div>}
                 </div>
                 <div className="sm:flex justify-between items-center mr-4">
-                    <div className="flex">
+                    <div className="flex items-center">
+                        <div className="pt-4 pr-2">
+                        {liked ? (
+                            <IoIosHeart className="text-red-500" onClick={handleToggle}/>    
+                        ):(
+                            <IoIosHeartEmpty className="text-black"  onClick={handleToggle}/>
+                        )}
+                        
+                        </div>
+                        <div className="pt-4 pr-4 text-sm">
+                            {likesCount}
+                        </div>
                         <div className="pt-4 text-sm">
                             {date}
                         </div>
